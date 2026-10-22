@@ -2,793 +2,1072 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Betül Dinçay | Bilişim Teknolojileri Portfolyosu</title>
-    <link rel="icon" href="avatar.jpg" type="image/jpeg">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-primary: #070913;
-            --bg-secondary: #0d1127;
-            --bg-card: rgba(16, 22, 48, 0.7);
-            --neon-blue: #00f0ff;
-            --neon-purple: #7000ff;
-            --neon-pink: #ff007f;
-            --neon-green: #00ff66;
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --glass-border: rgba(0, 240, 255, 0.2);
-            --glass-glow: rgba(0, 240, 255, 0.15);
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Yılan Oyunu - Betül PlayStation Edition</title>
+    <meta name="theme-color" content="#0d0f18">
 
+    <!-- Mobil & PWA İkon Tanımlamaları -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Yılan Oyunu">
+
+    <!-- Dinamik PWA Manifest -->
+    <script>
+        const manifestData = {
+            "name": "Yılan Oyunu - Betül PWA",
+            "short_name": "Yılan Oyunu",
+            "start_url": "./index.html",
+            "display": "standalone",
+            "background_color": "#0d0f18",
+            "theme_color": "#0d0f18",
+            "icons": [
+                { "src": "icon.png", "sizes": "192x192", "type": "image/png" },
+                { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+            ]
+        };
+        const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = URL.createObjectURL(blobManifest);
+        document.head.appendChild(link);
+    </script>
+
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Particle Canvas Background */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Cyberpunk Header / Nav */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(7, 9, 19, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            padding: 1rem 5%;
+            background: radial-gradient(circle at 50% 30%, #1a1b36 0%, #0c0d18 70%, #05060b 100%);
+            color: #f1f2f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span {
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px var(--neon-blue);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: all 0.3s;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
             position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--neon-blue);
-            text-shadow: 0 0 8px var(--neon-blue);
-        }
-
-        .nav-links a::after {
-            content: '';
+        body::before {
+            content: "";
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 8px var(--neon-blue);
-            transition: width 0.3s;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
+        .ps-wave {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            animation: psPulse 10s ease-in-out infinite alternate;
+        }
+        .ps-wave-1 {
+            width: 500px; height: 500px;
+            background: #5f27cd;
+            top: -120px; left: -100px;
+        }
+        .ps-wave-2 {
+            width: 550px; height: 550px;
+            background: #00d2d3;
+            bottom: -150px; right: -120px;
+            animation-delay: -5s;
+        }
+        .ps-wave-3 {
+            width: 400px; height: 400px;
+            background: #ff9ff3;
+            top: 40%; left: 60%;
+            opacity: 0.2;
+            animation-delay: -2s;
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            padding: 120px 5% 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
+        @keyframes psPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.25; }
+            50% { transform: scale(1.15) translate(40px, -20px); opacity: 0.45; }
+            100% { transform: scale(0.9) translate(-30px, 30px); opacity: 0.25; }
         }
 
-        .hero-content {
-            max-width: 600px;
+        .bubble {
+            position: absolute;
+            bottom: -80px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 40%, rgba(108, 92, 231, 0.35) 70%, rgba(255,255,255,0.6) 100%);
+            box-shadow: inset 0 0 12px rgba(255,255,255,0.7), 0 0 20px rgba(255,255,255,0.3);
+            pointer-events: none;
+            z-index: 1;
+            animation: bubbleFloat 9s infinite linear;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            border-radius: 20px;
-            color: var(--neon-blue);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        @keyframes bubbleFloat {
+            0% { transform: translateY(0) scale(0.7); opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { transform: translateY(-115vh) scale(1.2); opacity: 0; }
         }
 
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.2rem;
+        header {
+            text-align: center;
+            margin-bottom: 6px;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 2.2rem;
             font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #fff 0%, var(--neon-blue) 100%);
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #a29bfe, #74b9ff, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 25px rgba(108, 92, 231, 0.5);
         }
 
-        .typing-container {
-            font-family: 'Fira Code', monospace;
-            font-size: 1.4rem;
-            color: var(--neon-pink);
-            margin-bottom: 25px;
-            min-height: 40px;
+        p.subtitle {
+            font-size: 0.85rem;
+            color: #b2bec3;
+            letter-spacing: 1px;
+            margin-top: 2px;
+            font-weight: 500;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 35px;
-        }
-
-        .btn-group {
+        .action-bar {
             display: flex;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
             gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: #fff;
-            border: none;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 240, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        /* Avatar Container */
-        .avatar-frame {
-            position: relative;
-            width: 350px;
-            height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .avatar-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--neon-blue) 0%, rgba(112, 0, 255, 0.2) 70%);
-            filter: blur(25px);
-            animation: pulse 4s infinite alternate;
-        }
-
-        .avatar-img {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
+            margin-bottom: 8px;
             z-index: 2;
-            border: 3px solid var(--neon-blue);
-            box-shadow: 0 0 30px var(--neon-blue);
-            animation: float 5s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.95); }
-            100% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        /* Section Commons */
-        section {
-            padding: 80px 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: #fff;
-            letter-spacing: 2px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-
-        /* About Section */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
-            transition: 0.5s;
-        }
-
-        .glass-card:hover::before {
-            left: 100%;
-        }
-
-        .school-info h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        /* Skills Section */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .skill-item h4 {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            box-shadow: 0 0 10px var(--neon-blue);
-            border-radius: 5px;
-            width: 0%;
-            transition: width 1.5s ease-in-out;
-        }
-
-        /* Projects Section */
-        .project-filter {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 8px 20px;
+        .btn-stylish {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+            font-size: 0.88rem;
+            font-weight: 600;
             border-radius: 20px;
             cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-stylish:hover {
+            background: rgba(108, 92, 231, 0.4);
+            border-color: #a29bfe;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+        }
+
+        .btn-wardrobe {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border: none;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-sound {
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 1.1rem;
+            padding: 8px 12px;
+        }
+
+        .score-board {
+            display: flex;
+            gap: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+            z-index: 2;
+        }
+
+        .score-box {
+            background: rgba(15, 18, 30, 0.75);
+            padding: 5px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            color: #dfe6e9;
+        }
+
+        .score-box span {
+            font-weight: 800;
             font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
         }
 
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--neon-blue);
+        /* OYUN ALANI RENGARENK NEON IŞIKLI ÇERÇEVE */
+        #game-container {
+            position: relative;
+            z-index: 2;
+            padding: 7px;
+            border-radius: 26px;
+            background: linear-gradient(0deg, #ff007f, #00f0ff, #7000ff, #ff007f);
+            background-size: 300% 300%;
+            animation: rainbowNeon 4s linear infinite;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6), 0 0 50px rgba(255, 0, 127, 0.4);
+        }
+
+        @keyframes rainbowNeon {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        canvas {
+            background: #080a10;
+            border-radius: 20px;
+            display: block;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 7px; left: 7px;
+            width: calc(100% - 14px); height: calc(100% - 14px);
+            background: rgba(8, 10, 16, 0.88);
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #00b894, #00cec9);
             color: #000;
-            box-shadow: 0 0 15px var(--neon-blue);
+            border: none;
+            padding: 12px 34px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 206, 201, 0.4);
+            transition: all 0.2s;
         }
 
-        .projects-grid {
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 206, 201, 0.6);
+        }
+
+        /* KOSTÜM DOLABI MODAL */
+        #wardrobeModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 6, 12, 0.88);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #121522;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 18px;
+            width: 92%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(108, 92, 231, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            max-height: 92vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #a29bfe;
+            text-align: center;
+        }
+
+        #previewCanvas {
+            background: #080a10;
+            border: 2px solid rgba(162, 155, 254, 0.4);
+            border-radius: 16px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .section-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #dfe6e9;
+            align-self: flex-start;
+            margin-top: 2px;
+        }
+
+        .color-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
-            border-color: var(--neon-blue);
-        }
-
-        .project-img-placeholder {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, #101630, #1e295d);
+        }
+
+        .color-btn {
+            padding: 7px 4px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .color-btn.active {
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .accessories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            width: 100%;
+        }
+
+        .acc-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 7px 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--neon-blue);
-            font-size: 3rem;
+            gap: 4px;
+            color: #b2bec3;
+            transition: all 0.2s;
         }
 
-        .project-info {
-            padding: 20px;
-        }
-
-        .project-info h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+        .acc-item.selected {
+            background: rgba(108, 92, 231, 0.35);
+            border-color: #a29bfe;
             color: #fff;
+            font-weight: bold;
         }
 
-        .project-tags {
-            display: flex;
+        .apply-btn {
+            background: linear-gradient(135deg, #e84393, #fd79a8);
+            color: #fff;
+            border: none;
+            padding: 10px 28px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 6px;
+            box-shadow: 0 4px 15px rgba(232, 67, 147, 0.4);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            grid-template-rows: repeat(2, 50px);
             gap: 8px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            margin-top: 10px;
+            z-index: 2;
         }
 
-        .tag {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
-            background: rgba(112, 0, 255, 0.2);
-            color: #d8b4fe;
-            padding: 3px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(112, 0, 255, 0.4);
-        }
-
-        /* Terminal Footer */
-        .terminal-container {
-            max-width: 800px;
-            margin: 40px auto 0;
-            background: #000;
-            border: 1px solid var(--neon-green);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
-            font-family: 'Fira Code', monospace;
-            overflow: hidden;
-        }
-
-        .terminal-header {
-            background: #111;
-            padding: 10px;
+        .btn-ctrl {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1.2rem;
+            border-radius: 14px;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #222;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f56; }
-        .yellow { background: #ffbd2e; }
-        .green { background: #27c93f; }
-
-        .terminal-body {
-            padding: 20px;
-            color: var(--neon-green);
-            font-size: 0.9rem;
-            min-height: 120px;
+        .btn-ctrl:active {
+            background: rgba(108, 92, 231, 0.6);
+            border-color: #a29bfe;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            border-top: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .btn-up { grid-column: 2; grid-row: 1; }
+        .btn-left { grid-column: 1; grid-row: 2; }
+        .btn-down { grid-column: 2; grid-row: 2; }
+        .btn-right { grid-column: 3; grid-row: 2; }
 
-        /* Responsive Design */
-        @media (max-width: 900px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                padding-top: 100px;
-            }
-            .hero-content { max-width: 100%; }
-            .btn-group { justify-content: center; }
-            .about-grid { grid-template-columns: 1fr; }
-            .avatar-frame { width: 260px; height: 260px; }
-            .avatar-img { width: 220px; height: 220px; }
+        @media (min-width: 768px) {
+            .controls { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Particle Canvas -->
-    <canvas id="particles-canvas"></canvas>
+    <div class="ps-wave ps-wave-1"></div>
+    <div class="ps-wave ps-wave-2"></div>
+    <div class="ps-wave ps-wave-3"></div>
+    <div id="bubble-container"></div>
 
-    <!-- Header / Navbar -->
     <header>
-        <a href="#" class="logo">
-            <i class="fa-solid fa-code"></i> BETÜL<span>.BD</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="#home">Ana Sayfa</a></li>
-            <li><a href="#about">Hakkımda</a></li>
-            <li><a href="#skills">Dersler & Beceriler</a></li>
-            <li><a href="#projects">Projelerim</a></li>
-        </ul>
+        <h1>YILAN OYUNU</h1>
+        <p class="subtitle">Betül'ün Özel Tasarım Oyunu 🐆🍬</p>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <span class="badge">&lt;Bilişim Teknolojileri Öğrencisi /&gt;</span>
-            <h1>BETÜL DİNCAY</h1>
-            <div class="typing-container">
-                <span id="typing-text"></span>
-            </div>
-            <p>
-                yapıyoz biseyler dostum DİVALAR KOD YAZAR
-#DİVA
+    <div class="action-bar">
+        <button class="btn-stylish btn-wardrobe" onclick="openWardrobe()">
+            <span>✨ Kostüm Dolabı & Özelleştir</span>
+        </button>
+        <button id="soundToggleBtn" class="btn-stylish btn-sound" onclick="toggleSound()">
+            <span id="soundIcon">🔊</span>
+        </button>
+    </div>
 
-            </p>
-            <div class="btn-group">
-                <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Projelerimi İncele :D</a>
-                <a href="#about" class="btn btn-secondary"><i class="fa-solid fa-user"></i> Ben Kimimm?</a>
-            </div>
+    <div class="score-board">
+        <div class="score-box">Skor: <span id="score" style="color: #74b9ff;">0</span></div>
+        <div class="score-box">Level: <span id="level" style="color: #a29bfe;">1</span></div>
+        <div class="score-box">En Yüksek: <span id="high-score" style="color: #fd79a8;">0</span></div>
+    </div>
+
+    <div id="game-container">
+        <canvas id="snakeGame" width="320" height="320"></canvas>
+        <div id="overlay">
+            <h2 id="overlay-title" style="color: #a29bfe; font-size: 1.5rem; letter-spacing: 1px;">HAZIR MISIN? ✨</h2>
+            <button id="startBtn" class="start-btn" onclick="startGame()">BAŞLA 🚀</button>
         </div>
+    </div>
 
-        <div class="avatar-frame">
-            <div class="avatar-glow"></div>
-            <!-- Profil Görseli -->
-            <img src="avatar.jpg" alt="Betül Dinçay Avatar" class="avatar-img" onerror="this.src='https://via.placeholder.com/300/0d1127/00f0ff?text=avatar.jpg+Bulunamadi'">
+    <div class="controls">
+        <div class="btn-ctrl btn-up" onclick="changeDir('UP')">▲</div>
+        <div class="btn-ctrl btn-left" onclick="changeDir('LEFT')">◄</div>
+        <div class="btn-ctrl btn-down" onclick="changeDir('DOWN')">▼</div>
+        <div class="btn-ctrl btn-right" onclick="changeDir('RIGHT')">►</div>
+    </div>
+
+    <div id="wardrobeModal">
+        <div class="modal-content">
+            <div class="modal-title">🎀 Yılan Özelleştirme Dolabı</div>
+
+            <canvas id="previewCanvas" width="220" height="110"></canvas>
+
+            <div class="section-label">🎨 Yılan Renk Paleti:</div>
+            <div class="color-grid" id="colorSelector"></div>
+
+            <div class="section-label">👑 Aksesuarlar (Birden Fazla Seçebilirsin):</div>
+            <div class="accessories-grid" id="accGrid"></div>
+
+            <button class="apply-btn" onclick="applyCustomization()">✨ Özelleştir & Kaydet</button>
         </div>
-    </section>
+    </div>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="section-title">
-            <h2>HAKKIMDA</h2>
-        </div>
-        <div class="about-grid">
-            <div class="glass-card school-info">
-                <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: var(--neon-pink); margin-bottom: 15px;"></i>
-                33333333333333333333333
-                <p>
-                    Antalya / Korkuteli'de bulunan okulumda 11. sınıf Bilişim Teknolojileri Alanı öğrencisi olarak eğitimime devam etmekteyim. Teknolojiye, yazılım geliştirmeye ve yeni nesil web sistemlerine büyük ilgi duyuyorum.
-                </p>
-            </div>
-            <div class="glass-card">
-                <h3 style="color: var(--neon-pink); font-family: 'Orbitron'; margin-bottom: 15px;">MİSYONUM & HEDEFLERİM</h3>
-                <p>
-                     heves ettiğim yoldan ilerliyorum Lise eğitimim boyunca aldığım donanım, ağ ve yazılım dersleriyle güçlü bir temel oluşturarak, üniversitede Bilgisayar / Yazılım Mühendisliği alanında uzmanlaşmayı hedefliyorum. Üreten, çözen ve sürekli öğrenen bir bilişimci olma yolunda ilerliyorum.İNŞ
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="section-title">
-            <h2>ALAN DERSLERİ & BECERİLER</h2>
-        </div>
-        <div class="skills-container">
-            <div class="glass-card skill-item">
-                <h4>Web Tasarımı ve Programlama (HTML/CSS/JS) <span>85%</span></h4>
-                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
-            </div>
-            <div class="glass-card skill-item">
-                <h4>Nesne Yönelimli Programlama (C#) <span>75%</span></h4>
-                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
-            </div>
-            <div class="glass-card skill-item">
-                <h4>Veritabanı Mantığı & SQL <span>70%</span></h4>
-                <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
-            </div>
-            <div class="glass-card skill-item">
-                <h4>Ağ Sistemleri ve Donanım <span>80%</span></h4>
-                <div class="progress-bar"><div class="progress-fill" style="width: 80%;"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="section-title">
-            <h2>PROJELERİM</h2>
-        </div>
-
-        <div class="project-filter">
-            <button class="filter-btn active" data-filter="all">Tümü</button>
-            <button class="filter-btn" data-filter="web">Web</button>
-            <button class="filter-btn" data-filter="csharp">C# Desktop</button>
-            <button class="filter-btn" data-filter="future">Gelecek Projeler</button>
-        </div>
-
-        <div class="projects-grid">
-            <!-- Proje Kartı 1 -->
-            <div class="project-card" data-category="web">
-                <div class="project-img-placeholder">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </div>
-                <div class="project-info">
-                    <h3>Futuristik Kişisel Portfolyo</h3>
-                    <p>Siberpunk temalı, interaktif JavaScript ve CSS animasyonları içeren kişisel tanıtım web sitesi.</p>
-                    <div class="project-tags">
-                        <span class="tag">HTML5</span>
-                        <span class="tag">CSS3</span>
-                        <span class="tag">JavaScript</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Proje Kartı 2 -->
-            <div class="project-card" data-category="csharp">
-                <div class="project-img-placeholder">
-                    <i class="fa-solid fa-database"></i>
-                </div>
-                <div class="project-info">
-                    <h3>Okul Kütüphane Otomasyonu</h3>
-                    <p>C# Form ve Access/SQL veritabanı altyapısıyla hazırlanmış kitap ve öğrenci takip sistemi.</p>
-                    <div class="project-tags">
-                        <span class="tag">C#</span>
-                        <span class="tag">WinForms</span>
-                        <span class="tag">MS Access</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Proje Kartı 3 (Şablon) -->
-            <div class="project-card" data-category="future">
-                <div class="project-img-placeholder">
-                    <i class="fa-solid fa-microchip"></i>
-                </div>
-                <div class="project-info">
-                    <h3>Yapay Zekâ Destekli Çalışma Asistanı</h3>
-                    <p>Ders çalışma planı ve soru takibi yapabilen geliştirilme aşamasındaki yenilikçi proje.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">AI</span>
-                        <span class="tag">Yakında</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dynamic Terminal Section -->
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-                <span style="color: #666; font-size: 0.8rem; margin-left: 10px;">betul@nenehatun-mtal:~</span>
-            </div>
-            <div class="terminal-body" id="terminal-text">
-                &gt; Sistem başlatılıyor...<br>
-                &gt; Kullanıcı: Betül Dinçay [Korkuteli Nene Hatun Kız MTAL]<br>
-                &gt; Durum: Yeni projeler ve kodlar yüklenmeye hazır!
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Betül Dinçay. Tüm Hakları Saklıdır. | Bilişim Teknolojileri Alanı</p>
-    </footer>
-
-    <!-- JavaScript Logic -->
     <script>
-        // Typing Effect
-        const typingText = document.getElementById('typing-text');
-        const words = ['Geleceğin Yazılımcısı', 'Web Geliştirici Adayı', 'C# & Database Sistemleri', 'Teknoloji Tutkunu'];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        const bubbleContainer = document.getElementById('bubble-container');
+        for (let i = 0; i < 16; i++) {
+            let b = document.createElement('div');
+            b.className = 'bubble';
+            let size = Math.random() * 26 + 12;
+            b.style.width = size + 'px';
+            b.style.height = size + 'px';
+            b.style.left = Math.random() * 95 + 'vw';
+            b.style.animationDelay = (Math.random() * 8) + 's';
+            b.style.animationDuration = (7 + Math.random() * 6) + 's';
+            bubbleContainer.appendChild(b);
+        }
 
-        function type() {
-            const currentWord = words[wordIndex];
-            if (isDeleting) {
-                typingText.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingText.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-            }
+        // --- YILAN RENK PALETLERİ ---
+        const SKIN_THEMES = {
+            gold: { name: 'Altın', base: '#e5a823', innerSpot: '#8b4513', outerSpot: '#2b1704', textColor: '#000' },
+            pink: { name: 'Pembe', base: '#ff7675', innerSpot: '#d63031', outerSpot: '#6c5ce7', textColor: '#fff' },
+            emerald: { name: 'Zümrüt', base: '#55efc4', innerSpot: '#00b894', outerSpot: '#121522', textColor: '#000' },
+            silver: { name: 'Gümüş', base: '#dfe6e9', innerSpot: '#b2bec3', outerSpot: '#2d3436', textColor: '#000' },
+            night: { name: 'Gece Moru', base: '#a29bfe', innerSpot: '#6c5ce7', outerSpot: '#121522', textColor: '#fff' },
+            ruby: { name: 'Yakut', base: '#ff4d4d', innerSpot: '#990000', outerSpot: '#330000', textColor: '#fff' },
+            cyan: { name: 'Mavi Glow', base: '#00cec9', innerSpot: '#0984e3', outerSpot: '#0f172a', textColor: '#000' },
+            white: { name: 'Asil Beyaz', base: '#ffffff', innerSpot: '#74b9ff', outerSpot: '#2d3436', textColor: '#000' }
+        };
 
-            if (!isDeleting && charIndex === currentWord.length) {
-                isDeleting = true;
-                setTimeout(type, 2000);
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                setTimeout(type, 500);
-            } else {
-                setTimeout(type, isDeleting ? 50 : 100);
+        // --- KOSTÜMLER ---
+        const ACCESSORIES = [
+            { id: 'crown', name: 'Kral Tacı', icon: '👑' },
+            { id: 'ribbon', name: 'Kurdele', icon: '🎀' },
+            { id: 'sunglasses', name: 'Güneş Gözlüğü', icon: '🕶️' },
+            { id: 'glasses', name: 'Gözlük', icon: '👓' },
+            { id: 'headphones', name: 'Kulaklık', icon: '🎧' },
+            { id: 'witch', name: 'Cadı Şapkası', icon: '🧙‍♀️' },
+            { id: 'cowboy', name: 'Kovboy', icon: '🤠' },
+            { id: 'party', name: 'Parti', icon: '🥳' },
+            { id: 'cat', name: 'Kedi Kulağı', icon: '🐱' },
+            { id: 'bowtie', name: 'Papyon', icon: '🦋' }
+        ];
+
+        let activeSkinKey = 'gold';
+        let activeCostumes = new Set(['crown', 'ribbon']);
+
+        let tempSkinKey = activeSkinKey;
+        let tempCostumes = new Set(activeCostumes);
+
+        const colorSelector = document.getElementById('colorSelector');
+        Object.keys(SKIN_THEMES).forEach(key => {
+            let btn = document.createElement('div');
+            btn.className = `color-btn ${key === tempSkinKey ? 'active' : ''}`;
+            btn.style.backgroundColor = SKIN_THEMES[key].base;
+            btn.style.color = SKIN_THEMES[key].textColor;
+            btn.innerText = SKIN_THEMES[key].name;
+            btn.onclick = () => {
+                tempSkinKey = key;
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                drawWardrobePreview();
+            };
+            colorSelector.appendChild(btn);
+        });
+
+        const accGrid = document.getElementById('accGrid');
+        ACCESSORIES.forEach(acc => {
+            let item = document.createElement('div');
+            item.className = `acc-item ${tempCostumes.has(acc.id) ? 'selected' : ''}`;
+            item.innerHTML = `${acc.icon} ${acc.name}`;
+            item.onclick = () => {
+                if (tempCostumes.has(acc.id)) {
+                    tempCostumes.delete(acc.id);
+                    item.classList.remove('selected');
+                } else {
+                    tempCostumes.add(acc.id);
+                    item.classList.add('selected');
+                }
+                drawWardrobePreview();
+            };
+            accGrid.appendChild(item);
+        });
+
+        function openWardrobe() {
+            playClickSound();
+            tempSkinKey = activeSkinKey;
+            tempCostumes = new Set(activeCostumes);
+
+            document.querySelectorAll('.color-btn').forEach((b, i) => {
+                const key = Object.keys(SKIN_THEMES)[i];
+                if (key === tempSkinKey) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+
+            document.querySelectorAll('.acc-item').forEach((item, i) => {
+                const acc = ACCESSORIES[i];
+                if (tempCostumes.has(acc.id)) item.classList.add('selected');
+                else item.classList.remove('selected');
+            });
+
+            document.getElementById('wardrobeModal').style.display = 'flex';
+            drawWardrobePreview();
+        }
+
+        function applyCustomization() {
+            playClickSound();
+            activeSkinKey = tempSkinKey;
+            activeCostumes = new Set(tempCostumes);
+            document.getElementById('wardrobeModal').style.display = 'none';
+            if (isRunning) draw();
+        }
+
+        // --- PREVIEW CANLI ÇİZİMİ ---
+        const pCanvas = document.getElementById('previewCanvas');
+        const pCtx = pCanvas.getContext('2d');
+
+        function drawWardrobePreview() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            const previewSnake = [
+                { x: 140, y: 55 },
+                { x: 120, y: 55 },
+                { x: 100, y: 55 },
+                { x: 80, y: 55 }
+            ];
+
+            const theme = SKIN_THEMES[tempSkinKey];
+
+            pCtx.save();
+            pCtx.lineCap = 'round';
+            pCtx.lineJoin = 'round';
+            pCtx.lineWidth = 18;
+            pCtx.strokeStyle = theme.base;
+            pCtx.beginPath();
+            previewSnake.forEach((seg, i) => {
+                if (i === 0) pCtx.moveTo(seg.x, seg.y);
+                else pCtx.lineTo(seg.x, seg.y);
+            });
+            pCtx.stroke();
+            pCtx.restore();
+
+            previewSnake.forEach((seg, i) => {
+                if (i === 0) return;
+                pCtx.save();
+                pCtx.translate(seg.x, seg.y);
+                pCtx.fillStyle = theme.innerSpot;
+                pCtx.beginPath();
+                pCtx.ellipse(0, 0, 4, 3, 0.5, 0, Math.PI * 2);
+                pCtx.fill();
+                pCtx.strokeStyle = theme.outerSpot;
+                pCtx.lineWidth = 1.3;
+                pCtx.beginPath();
+                pCtx.arc(0, 0, 4.2, 0, Math.PI * 1.3);
+                pCtx.stroke();
+                pCtx.restore();
+            });
+
+            const head = previewSnake[0];
+            pCtx.save();
+            pCtx.translate(head.x, head.y);
+            pCtx.fillStyle = theme.base;
+            pCtx.beginPath();
+            pCtx.ellipse(2, 0, 11, 10, 0, 0, Math.PI * 2);
+            pCtx.fill();
+
+            drawEyes(pCtx);
+            drawAccessories(pCtx, tempCostumes);
+            pCtx.restore();
+        }
+
+        let audioCtx = null;
+        let isMuted = false;
+        let bgMusicInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            startBgMusic();
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.getElementById('soundIcon').innerText = isMuted ? '🔇' : '🔊';
+            if (isMuted && bgMusicInterval) {
+                clearInterval(bgMusicInterval);
+                bgMusicInterval = null;
+            } else if (!isMuted) {
+                startBgMusic();
             }
         }
-        document.addEventListener('DOMContentLoaded', type);
 
-        // Interactive Particle Canvas Background
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function startBgMusic() {
+            if (bgMusicInterval || isMuted) return;
+            const melody = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+            let noteIdx = 0;
+            bgMusicInterval = setInterval(() => {
+                if (isMuted || !audioCtx) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(melody[noteIdx], audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+                noteIdx = (noteIdx + 1) % melody.length;
+            }, 300);
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
 
-        const particles = [];
-        const particleCount = 60;
+        function playEatSound() {
+            if (isMuted || !audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(550, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1250, audioCtx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+        }
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2 + 1,
-                vx: (Math.random() - 0.5) * 0.8,
-                vy: (Math.random() - 0.5) * 0.8,
-                color: Math.random() > 0.5 ? '#00f0ff' : '#7000ff'
+        function playLevelUpSound() {
+            if (isMuted || !audioCtx) return;
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.08);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.08 + 0.12);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + idx * 0.08);
+                osc.stop(audioCtx.currentTime + idx * 0.08 + 0.12);
             });
         }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function playExplodeSound() {
+            if (isMuted || !audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.35);
+            gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+        }
 
-            for (let i = 0; i < particleCount; i++) {
-                let p = particles[i];
+        function playClickSound() {
+            if (isMuted || !audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(420, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        const canvas = document.getElementById("snakeGame");
+        const ctx = canvas.getContext("2d");
+        const overlay = document.getElementById("overlay");
+        const overlayTitle = document.getElementById("overlay-title");
+        const startBtn = document.getElementById("startBtn");
+
+        const grid = 16;
+        let score = 0;
+        let level = 1;
+        let foodEatenCount = 0;
+        let gameSpeed = 150;
+        let highScore = localStorage.getItem("leopard_snake_hs") || 0;
+        document.getElementById("high-score").innerText = highScore;
+
+        let snake = [];
+        let food = { x: 5, y: 5, type: 0 };
+        let dx = 1;
+        let dy = 0;
+        let gameTimeout = null;
+        let isRunning = false;
+
+        let fireworks = [];
+        let levelBanner = { active: false, text: "", alpha: 0, scale: 0.5 };
+
+        function triggerLevelUpEffects(newLevel) {
+            playLevelUpSound();
+
+            levelBanner = {
+                active: true,
+                text: `LEVEL ${newLevel}`,
+                alpha: 1.0,
+                scale: 0.3
+            };
+
+            const colors = ['#ff7675', '#74b9ff', '#55efc4', '#fd79a8', '#ffeaa7', '#a29bfe'];
+            for (let i = 0; i < 75; i++) {
+                let angle = Math.random() * Math.PI * 2;
+                let speed = Math.random() * 6 + 2;
+                fireworks.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    radius: Math.random() * 3 + 1.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    alpha: 1,
+                    decay: Math.random() * 0.02 + 0.015
+                });
+            }
+        }
+
+        function updateAndDrawEffects() {
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                let p = fireworks[i];
                 p.x += p.vx;
                 p.y += p.vy;
+                p.alpha -= p.decay;
 
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                if (p.alpha <= 0) {
+                    fireworks.splice(i, 1);
+                    continue;
+                }
 
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = p.color;
                 ctx.fill();
+                ctx.restore();
+            }
 
-                // Connect nearby particles with lines
-                for (let j = i + 1; j < particleCount; j++) {
-                    let p2 = particles[j];
-                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 120})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
+            if (levelBanner.active) {
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.scale(levelBanner.scale, levelBanner.scale);
+                ctx.globalAlpha = levelBanner.alpha;
+
+                ctx.shadowColor = "#a29bfe";
+                ctx.shadowBlur = 20;
+
+                ctx.font = "900 32px -apple-system, sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                ctx.fillStyle = "#ff7675";
+                ctx.fillText(levelBanner.text, 2, 2);
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(levelBanner.text, 0, 0);
+
+                ctx.restore();
+
+                if (levelBanner.scale < 1.2) levelBanner.scale += 0.08;
+                levelBanner.alpha -= 0.018;
+
+                if (levelBanner.alpha <= 0) {
+                    levelBanner.active = false;
                 }
             }
-            requestAnimationFrame(animateParticles);
         }
-        animateParticles();
 
-        // Project Filtering System
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.project-card');
+        const FOOD_TYPES = [
+            { icon: '🍬', name: 'Şeker' },
+            { icon: '🍭', name: 'Lolipop' },
+            { icon: '🍩', name: 'Donut' },
+            { icon: '🧁', name: 'Kek' },
+            { icon: '🍫', name: 'Çikolata' }
+        ];
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        function startGame() {
+            initAudio();
+            playClickSound();
+            overlay.style.display = "none";
+            score = 0;
+            level = 1;
+            foodEatenCount = 0;
+            gameSpeed = 150;
+            dx = 1; dy = 0;
 
-                const filter = btn.getAttribute('data-filter');
+            document.getElementById("score").innerText = score;
+            document.getElementById("level").innerText = level;
 
-                projectCards.forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
+            snake = [
+                { x: 8, y: 10 },
+                { x: 7, y: 10 },
+                { x: 6, y: 10 }
+            ];
+
+            spawnFood();
+            isRunning = true;
+            if (gameTimeout) clearTimeout(gameTimeout);
+            gameLoop();
+        }
+
+        function spawnFood() {
+            let valid = false;
+            while (!valid) {
+                food.x = Math.floor(Math.random() * (canvas.width / grid));
+                food.y = Math.floor(Math.random() * (canvas.height / grid));
+                valid = !snake.some(s => s.x === food.x && s.y === food.y);
+            }
+            food.type = Math.floor(Math.random() * FOOD_TYPES.length);
+        }
+
+        function changeDir(dir) {
+            initAudio();
+            if (dir === 'UP' && dy === 0) { dx = 0; dy = -1; }
+            if (dir === 'DOWN' && dy === 0) { dx = 0; dy = 1; }
+            if (dir === 'LEFT' && dx === 0) { dx = -1; dy = 0; }
+            if (dir === 'RIGHT' && dx === 0) { dx = 1; dy = 0; }
+        }
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowUp" || e.key === "w") changeDir('UP');
+            if (e.key === "ArrowDown" || e.key === "s") changeDir('DOWN');
+            if (e.key === "ArrowLeft" || e.key === "a") changeDir('LEFT');
+            if (e.key === "ArrowRight" || e.key === "d") changeDir('RIGHT');
         });
+
+        function gameLoop() {
+            if (!isRunning) return;
+            update();
+            draw();
+            gameTimeout = setTimeout(gameLoop, gameSpeed);
+        }
+
+        function update() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+            if (head.x < 0 || head.x >= canvas.width / grid || head.y < 0 || head.y >= canvas.height / grid) {
+                gameOver();
+                return;
+            }
+
+            if (snake.some(s => s.x === head.x && s.y === head.y)) {
+                gameOver();
+                return;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                playEatSound();
+                score += 10;
+                foodEatenCount++;
+                document.getElementById("score").innerText = score;
+
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem("leopard_snake_hs", highScore);
+                    document.getElementById("high-score").innerText = highScore;
+                }
+
+                if (foodEatenCount % 3 === 0) {
+                    level++;
+                    document.getElementById("level").innerText = level;
+                    gameSpeed = Math.max(70, gameSpeed - 12);
+                    triggerLevelUpEffects(level);
+                }
+
+                spawnFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function gameOver() {
+            playExplodeSound();
+            isRunning = false;
+            overlayTitle.innerText = "OYUN BİTTİ! 💥";
+            startBtn.innerText = "TEKRAR OYNA? 🔄";
+            overlay.style.display = "flex";
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+            for (let i = 0; i < canvas.width; i += grid) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+            }
+
+            ctx.font = "14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+                FOOD_TYPES[food.type].icon,
+                food.x * grid + grid / 2,
+                food.y * grid + grid / 2 + 1
+            );
+
+            const theme = SKIN_THEMES[activeSkinKey];
+
+            if (snake && snake.length > 0) {
+                ctx.save();
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = grid - 2;
+                ctx.strokeStyle = theme.base;
+                ctx.beginPath();
+                snake.forEach((seg, i) => {
+                    let cx = seg.x * grid + grid / 2;
+                    let cy = seg.y * grid + grid / 2;
+                    if (i === 0) ctx.moveTo(cx, cy);
+                    else ctx.lineTo(cx, cy);
+                });
+                ctx.stroke();
+                ctx.restore();
+
+                snake.forEach((seg, i) => {
+                    if (i === 0) return;
+                    let cx = seg.x * grid + grid / 2;
+                    let cy = seg.y * grid + grid / 2;
+
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.fillStyle = theme.innerSpot;
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 3, 2, 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = theme.outerSpot;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 3.2, 0, Math.PI * 1.3);
+                    ctx.stroke();
+                    ctx.restore();
+                });
+
+                const head = snake[0];
+                let hx = head.x * grid + grid / 2;
+                let hy = head.y * grid + grid / 2;
+
+                ctx.save();
+                ctx.translate(hx, hy);
+
+                let angle = 0;
+                if (dx === 1) angle = 0;
+                if (dx === -1) angle = Math.PI;
+                if (dy === 1) angle = Math.PI / 2;
+                if (dy === -1) angle = -Math.PI / 2;
+                ctx.rotate(angle);
+
+                ctx.fillStyle = theme.base;
+                ctx.beginPath();
+                ctx.ellipse(1, 0, 9, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                drawEyes(ctx);
+                drawAccessories(ctx, activeCostumes);
+
+                ctx.restore();
+            }
+
+            updateAndDrawEffects();
+        }
+
+        function drawEyes(targetCtx) {
+            targetCtx.fillStyle = "#ffffff";
+            targetCtx.beginPath();
+            targetCtx.arc(3, -4, 3, 0, Math.PI * 2);
+            targetCtx.arc(3, 4, 3, 0, Math.PI * 2);
+            targetCtx.fill();
+
+            targetCtx.fillStyle = "#000000";
+            targetCtx.beginPath();
+            targetCtx.arc(4, -4, 1.5, 0, Math.PI * 2);
+            targetCtx.arc(4, 4, 1.5, 0, Math.PI * 2);
+            targetCtx.fill();
+        }
+
+        function drawAccessories(targetCtx, costumeSet) {
+            targetCtx.font = "12px sans-serif";
+            targetCtx.textAlign = "center";
+            targetCtx.textBaseline = "middle";
+
+            if (costumeSet.has('crown')) targetCtx.fillText("👑", 0, -9);
+            if (costumeSet.has('ribbon')) targetCtx.fillText("🎀", -4, -8);
+            if (costumeSet.has('sunglasses')) targetCtx.fillText("🕶️", 4, 0);
+            if (costumeSet.has('glasses')) targetCtx.fillText("👓", 4, 0);
+            if (costumeSet.has('headphones')) targetCtx.fillText("🎧", 1, 0);
+            if (costumeSet.has('witch')) targetCtx.fillText("🧙‍♀️", 0, -9);
+            if (costumeSet.has('cowboy')) targetCtx.fillText("🤠", 0, -8);
+            if (costumeSet.has('party')) targetCtx.fillText("🥳", 2, -8);
+            if (costumeSet.has('cat')) targetCtx.fillText("🐱", 0, -8);
+            if (costumeSet.has('bowtie')) targetCtx.fillText("🦋", -6, 0);
+        }
+
+        draw();
     </script>
 </body>
 </html>
