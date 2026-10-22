@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Sıla - Neon Yılan PWA</title>
+    <title>Betül - Neon Yılan PWA</title>
     <meta name="theme-color" content="#0d0e15">
 
     <!-- Mobil & PWA İkon Tanımlamaları -->
@@ -16,7 +16,7 @@
     <!-- Dinamik PWA Manifest -->
     <script>
         const manifestData = {
-            "name": "Neon Yılan - Sıla PWA",
+            "name": "Neon Yılan - Betül PWA",
             "short_name": "NeonYılan",
             "start_url": "./index.html",
             "display": "standalone",
@@ -245,7 +245,7 @@
 
     <header>
         <h1 id="main-title">NEON SNAKE</h1>
-        <p class="subtitle">Sıla'nın Mobil PWA Projesi</p>
+        <p class="subtitle">Betül'ün Mobil PWA Projesi</p>
     </header>
 
     <!-- Dinamik Cihaz Yükleme Butonu -->
@@ -615,7 +615,11 @@
                     ctx.fillStyle = theme.main;
                     
                     ctx.beginPath();
-                    ctx.roundRect(x + 1, y + 1, grid - 2, grid - 2, 5);
+                    if (ctx.roundRect) {
+                        ctx.roundRect(x + 1, y + 1, grid - 2, grid - 2, 5);
+                    } else {
+                        ctx.rect(x + 1, y + 1, grid - 2, grid - 2);
+                    }
                     ctx.fill();
                     ctx.restore();
                 }
